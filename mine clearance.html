@@ -1,0 +1,376 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>扫雷</title>
+	<link rel="stylesheet" href="mine.css">
+	<script type="text/javascript" src="zjw.js"></script>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="top">
+			<input class="time" type="text" style="font-size:30px; color:gray;">
+		</div>
+	<div class="bottom">
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul></div>
+	</div>
+	<script type="text/javascript">
+	// var time = document.getElementsByClassName('time')[0];
+	var Div = document.getElementsByClassName('bottom')[0];
+	var input = document.getElementsByTagName('input')[0];
+	var oUl = document.getElementsByTagName('ul');
+	var oLi = document.getElementsByTagName('li');
+	var oUllen = oUl.length;	
+	var oLilen = oLi.length;
+	var temp = new Array();
+	var boom = 4;
+	input.value = boom;
+	var firstclick = true;
+	var blank = 0;
+	var qi = 0;
+
+	//清除默认事件
+	Div.oncontextmenu = function(e){
+		cancelHandler(e);
+	}
+	
+	//初始化li建立二维数组
+	for(i = 1; i <= 10; i++ ){
+		temp[i] = new Array();
+		for(j = 1; j <=  10; j++){
+			temp[i][j] = 0;
+			var n = transform(i,j);
+			oLi[n - 1].x = i;
+			oLi[n - 1].y = j;
+			oLi[n - 1].Value = 0;
+			oLi[n - 1].visit = false;
+			oLi[n - 1].fx = false;
+			// console.log(oLi[i].value)
+			// console.log(oLi[n - 1].visit)
+		}
+	}
+	//翻译每个坐标是第几个ul
+	 function transform(i,j){
+	 	var n;
+	 	if(j > 1){
+	 		n = (j - 1)*10 + i;
+	 	}
+	 	else{
+	 		n = i;
+	 	}
+	 	return n;
+	 }
+	 //给100个li绑定事件
+	for(i = 0; i < oLilen; i ++) {
+		// console.log(oLi[i].visit)
+		addEvent(oLi[i], 'mousedown', mousedown);
+	}
+		function mousedown(e) {
+			var event = e||window.event;
+			// console.log(this.Value);
+			if(!this.visit){
+				// console.log(this.visit)
+				if(event.button == 0){
+					if(firstclick == true){
+					    firstclick = false;
+					    setboom(this);
+					    setValue();
+					}else{
+						if(this.Value == 9){
+							Over();
+						}
+						// else if(blank == 10 * 10 - boom){
+						// 	win();
+						// }
+					}			    
+				  extend(this); 
+				  this.visit = true;
+				  // win(); 
+				}else if(event.button == 2){
+					if(!this.fx){
+						if(input.value > 0){
+							input.value--;
+							if(!this.visit){
+								this.style.backgroundImage = "url('label.png')";
+								this.style.backgroundColor = "white"
+								this.style.backgroundSize = "cover";
+								this.visit = true;
+								if(this.Value == 9 ){
+									qi++;
+									console.log(qi);
+								}
+							}else{
+								oLi[i]['on'+ 'mousedown'] = null;
+
+							}
+						}
+						this.fx = true;
+					}else{
+						this.fx = false;
+						console.log('2');
+					this.style.backgroundImage = none;
+						this.style.backgroundColor = 'green'
+						this.style.backgroundSize = "cover";
+						this.visit = false;
+					}
+
+					
+
+				}
+				
+			}
+			win();
+		}
+
+	
+	 //设雷
+	 function setboom(li){
+	 	var x;
+	 	var y;
+	 	var i = 0;
+	 	while(i < boom){
+	 		x = Math.ceil(Math.random() * 10);
+			y = Math.ceil(Math.random() * 10);
+			if(x == li.x && y == li.y){
+			}else if(temp[x][y] != 9){
+				temp[x][y] = 9;
+				oLi[transform(x,y) - 1].Value = 9;
+				i++;
+				// console.log(oLi[transform(x,y) - 1].Value);
+				// console.log('x=' + x + 'y=' + y + oLi[transform(x,y) - 1].Value)
+				// console.log(oLi[transform(x,y) - 1].Value)
+			}
+	 	}
+	 	ni();
+	 }
+	 //设置Value
+	 function setValue(){
+	 	for(i = 1; i <= 10; i++){
+	 		for(j = 1; j <= 10; j++){
+	 			var a = 0;
+	 			if(temp[i][j] != 9){
+	 				var x1;
+	 				var y1;
+	 				for(x1 = (i > 1? i-1 : 1); x1 <= (i + 1 > 10? 10 : i+1);x1++){
+	 					for(y1 = (j > 1? j-1 : 1); y1 <= (j + 1 >10 ?10 : j+1);y1++){
+	 						if(temp[x1][y1] == 9){
+	 							a++;
+	 						}
+	 						temp[i][j] = a;
+				    		oLi[transform(i, j) - 1].Value = a;
+	 					}
+	 				}
+	 			}
+	 			
+
+	 		}
+	 	}
+	 }
+
+	 //扩展
+	 function extend(li){
+	 	if(!li.visit){
+	 		if(li.Value != 9){
+	 			if(li.Value == 0){
+	 				li.style.backgroundColor = 'white';
+				    li.visit = true;
+				    blank ++;
+				    for(var p = (li.x >= 2 ? li.x - 1 : 1); p <= (li.x + 1 <= 10 ? li.x + 1 : 10); p ++) {
+			 					for(var q = (li.y >= 2 ? li.y - 1 : 1); q <= (li.y + 1 <= 10 ? li.y + 1 : 10); q ++) {
+									// if(p != itar.x && q != itar.y) {
+										// console.log('p=' + p + '   q=' + q)
+										extend(oLi[transform(p, q) - 1]);
+			 						// }
+
+								}	
+			 					}
+	 			}else {
+						li.style.backgroundColor = "white";
+						li.innerHTML = li.Value;
+						li.visit = true;
+						blank ++;
+					}
+					// console.log(blank);
+	 		}else{
+	 			display();
+	 		}
+
+	 	}
+	 }
+	 function display(){
+	 	for(i = 0;i < 100; i++){
+	 		if(oLi[i].Value == 9){
+	 			oLi[i].style.backgroundColor = 'red';
+	 			
+	 		}
+	 		else{
+
+		 		oLi[i].style.backgroundColor = 'white';
+				// oLi[i].innerHTML = oLi[i].Value;
+				this.visit = true;
+	 		}
+	 	}
+	 }
+	function displaywin(){
+	 	for(i = 0;i < 100; i++){
+	 		if(oLi[i].Value == 9){
+	 			oLi[i].style.backgroundColor = 'yellow';
+	 			
+	 		}
+	 		else{
+
+		 		oLi[i].style.backgroundColor = 'white';
+				// oLi[i].innerHTML = oLi[i].Value;
+				// this.visit = true;
+	 		}
+	 	}
+	 }
+	 function Over() {
+       	alert(' you lose!');
+       }
+
+     function win() {
+       	if(blank == 100 - boom){
+       		displaywin();
+       		alert(' you win!你真棒hahaha');
+       		// Div.removeEventListener('mousedown',mousedown,false);
+       	}else if(qi == boom){
+       		// display();
+			alert(' 赢啦哈哈哈');
+       	}
+       	  // alert(' you win!');
+		}
+
+
+		function ni(){
+			for(i = 0;i < 100; i++){
+	 		if(oLi[i].Value == 9){
+	 			console.log(oLi[i].y + "and" + oLi[i].x);
+	 		}
+	        }
+		}
+			
+
+	
+	</script>
+
+</body>
+</html>
